@@ -1,0 +1,14 @@
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# npm
+node_modules/
+
+# Compass
+.sass-cache
+
+# *csv_content/
+.DS_Store
+.vscode
