@@ -1,0 +1,198 @@
+/* Font family */
+$fontfamilyDefault: 'Montserrat', sans-serif;
+
+/* Font family weights */
+$fontFamilyRegular: 400;
+$fontFamilyMedium: 500;
+$fontFamilySemiBold: 600;
+$fontFamilyBold: 700;
+
+/* Primary colors */
+$primaryWhite: #fff;
+$colorLightGray: #eee;
+$colorMediumGray: #444;
+$colorDarkGray: #666;
+$colorGreen: #25b99a;
+$colorBlue: #0079c1;
+
+/* Mixins */
+
+@mixin customRadioBtn() {
+  [type="radio"]:checked,
+  [type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+  }
+  [type="radio"]:checked + label,
+  [type="radio"]:not(:checked) + label {
+    position: relative;
+    padding-left: 35px;
+    padding-top: 4px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: $colorDarkGray;
+  }
+  [type="radio"]:checked + label:before,
+  [type="radio"]:not(:checked) + label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+    background: $primaryWhite;
+  }
+  [type="radio"]:checked + label:after,
+  [type="radio"]:not(:checked) + label:after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background: $colorBlue;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+  }
+  [type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  [type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+/* Common styles */
+
+ul {
+  margin: 0;
+  padding: 0;
+  li {
+    list-style: none;
+  }
+}
+
+/* App Styles */
+
+body {
+  margin: 0;
+  background: $colorLightGray;
+  font-family: $fontfamilyDefault;
+}
+
+section {
+  background: $colorLightGray;
+  max-width: 1024px;
+  margin: 0 auto;
+  .radio-chocie {
+    h2 {
+      font-size: 28px;
+      margin: 10px 0;
+      font-weight: $fontFamilyBold;
+    }
+    ul {
+      li {
+        font-size: 20px;
+        padding: 15px 0;
+        font-weight: $fontFamilyRegular;
+
+        @include customRadioBtn();
+      }
+    }
+  }
+  .input-block {
+    padding: 20px;
+    background: $colorGreen;
+    input {
+      width: 350px;
+      padding: 0 20px;
+      height: 60px;
+      border: 0;
+      outline: 0;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.5);
+      color: $primaryWhite;
+      font-size: 14px;
+    }
+    ::-webkit-input-placeholder {
+      color: $primaryWhite;
+    }
+    ::-moz-placeholder { /* Firefox 19+ */
+      color: $primaryWhite;
+    }
+    :-ms-input-placeholder { /* IE 10+ */
+      color: $primaryWhite;
+    }
+    :-moz-placeholder { /* Firefox 18- */
+      color: $primaryWhite;
+    }
+  }
+
+  button{
+    outline: 0; 
+    font-size: 1em;
+    font-weight: $fontFamilyMedium;
+    background: $primaryWhite;
+    border: none;
+    width: 80px;
+    height: 50px;
+    padding: 15px;
+    margin-left: 15px;
+    transition: all .3s ease-out; 
+    box-shadow: inset 0 -8px 0 0 rgba(0,0,0,.2);
+    cursor: pointer;
+  }
+  button:hover{
+    color: $colorMediumGray;
+  }
+  button:active{
+    color: $colorLightGray;
+    box-shadow: inset 0 -4px 0 0 rgba(0,0,0,.2),
+  }
+
+  /* Item lists */
+  .item-list {
+    ul {
+      width: 33%;
+      display: inline-block;
+      position: relative;
+      vertical-align: top;
+
+      h3 {
+        margin: 30px 0;
+        font-size: 20px;
+        font-weight: $fontFamilySemiBold;
+        &::after {
+          content: "";
+          width: 85%;
+          display: block;
+          position: absolute;
+          left: 0;
+          margin: 5px auto 0;
+          border: 2px solid #ddd;
+          visibility: visible;
+        }
+      }
+
+      li {
+        width: 80%;
+        padding: 10px;
+        margin-bottom: 10px;
+        background: $primaryWhite;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
+
+        &:last-child {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
