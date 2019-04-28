@@ -39,16 +39,22 @@ document.getElementById('addItem').addEventListener('click', function() {
     dataObjectUpdate();
   }
 
-  if ((document.getElementById('toDoBtn').checked === false) 
-    && (document.getElementById('inProgressBtn').checked === false) 
+  if ((document.getElementById('toDoBtn').checked === false)
+    && (document.getElementById('inProgressBtn').checked === false)
     && (document.getElementById('completedBtn').checked === false)) {
       alert ( "Please choose an option from above" );
       document.getElementById('itemList').value = '';
   } else {
     if (inputVal) {
-      addItemToDo(inputVal);
-      inProgressListItem(inputVal);
-      completedListItem(inputVal);
+      if (document.getElementById('toDoBtn').checked) {
+        addItemToDo(inputVal);
+      }
+      if (document.getElementById('inProgressBtn').checked) {
+        inProgressListItem(inputVal);
+      }
+      if (document.getElementById('completedBtn').checked) {
+        completedListItem(inputVal);
+      }
       /* Clear input */
       document.getElementById('itemList').value = '';
     }
@@ -57,7 +63,6 @@ document.getElementById('addItem').addEventListener('click', function() {
 
 // Render All list function
 function renderAllList() {
-  // debugger;
   if (!data.toDo.length && !data.inProgress.length && data.completed.length) return;
 
   for (let i = 0; i < data.toDo.length; i++) {
@@ -87,28 +92,11 @@ function addItemToDo(todoText, inProgress) {
   const todoItem = document.createElement('li');
   todoItem.innerText = todoText;
 
-  (inProgress) ? '' : toDoList.appendChild(todoItem, toDoList.childNodes[0]);
-
   /* Selected option value */
-  if (document.getElementById('toDoBtn').checked) {
-    toDoList.appendChild(todoItem, toDoList.childNodes[0]); 
+  if (document.getElementById('toDoBtn').checked || data.toDo.length) {
+    toDoList.appendChild(todoItem, toDoList.childNodes[0]);
   }
 }
-
-// const addItemToDo = (todoText, inProgress) => {
-//   const toDoList = (inProgress) ? document.getElementById('inProgress') : document.getElementById('toDo');
-
-//   /* Create a todo list item */
-//   const todoItem = document.createElement('li');
-//   todoItem.innerText = todoText;
-  
-//   toDoList.appendChild(todoItem, toDoList.childNodes[0]);
-
-//   /* Selected option value */
-//   if (document.getElementById('toDoBtn').checked) {
-//     toDoList.appendChild(todoItem, toDoList.childNodes[0]); 
-//   }
-// }
 
 // Add item to in progress list
 function inProgressListItem(inProgressText, completed) {
@@ -118,10 +106,8 @@ function inProgressListItem(inProgressText, completed) {
   const inProgressItem = document.createElement('li');
   inProgressItem.innerText = inProgressText;
 
-  (completed) ? '' : inProgressList.appendChild(inProgressItem, inProgressItem.childNodes[0]);
-
   /* Selected option value */
-  if (document.getElementById('inProgressBtn').checked) {
+  if (document.getElementById('inProgressBtn').checked || data.inProgress.length) {
     inProgressList.appendChild(inProgressItem, inProgressItem.childNodes[0]);
   }
 }
@@ -134,10 +120,8 @@ function completedListItem(completedText, toDo) {
   const completedItem = document.createElement('li');
   completedItem.innerText = completedText;
 
-  (toDo) ? '' : completedList.appendChild(completedItem, completedItem.childNodes[0]);
-
   /* Selected option value */
-  if (document.getElementById('completedBtn').checked) {
+  if (document.getElementById('completedBtn').checked || data.completed.length) {
     completedList.appendChild(completedItem, completedItem.childNodes[0]);
   }
 }
