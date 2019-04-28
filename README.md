@@ -7,11 +7,3 @@ Front End Fundamentals.
 2 Install npm dependencies and Run serve.
   npm install
   npm start
-  
-Get inside Vagrant
-
-vagrant ssh
-Execute a script to download and install DB and Media dump
-
-cd /home/vagrant/project
-bash .build/syncQA.sh
