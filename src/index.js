@@ -8,7 +8,7 @@ function component() {
   element.innerHTML = `${list()} ${todoInput()} ${itemList()}`;
   return element;
 }
-
+// Main render
 document.body.appendChild(component());
 
 // Arrays
@@ -18,25 +18,15 @@ const data = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getIte
   completed: [],
 }
 
-// Render all list
-renderAllList();
-
 // Add items to list
 document.getElementById('addItem').addEventListener('click', function() {
   const inputVal = document.getElementById('itemList').value;
 
   if (inputVal) {
-    if (document.getElementById('toDoBtn').checked) {
-      data.toDo.push(inputVal);
-    }
-    if (document.getElementById('inProgressBtn').checked) {
-      data.inProgress.push(inputVal);
-    }
-    if (document.getElementById('completedBtn').checked) {
-      data.completed.push(inputVal);
-    }
+    const key = document.querySelector('[name="todo-radio-group"]:checked').value;
+    data[key].push(inputVal);
     /* Update data */
-    dataObjectUpdate();
+    updateLocalStorage();
   }
 
   if ((document.getElementById('toDoBtn').checked === false)
@@ -65,22 +55,20 @@ document.getElementById('addItem').addEventListener('click', function() {
 function renderAllList() {
   if (!data.toDo.length && !data.inProgress.length && data.completed.length) return;
 
-  for (let i = 0; i < data.toDo.length; i++) {
-    const value = data.toDo[i];
-    addItemToDo(value);
-  }
-  for (let j = 0; j < data.inProgress.length; j++) {
-    const value = data.inProgress[j];
-    inProgressListItem(value, false);
-  }
-  for (let k = 0; k < data.completed.length; k++) {
-    const value = data.completed[k];
-    completedListItem(value, false);
-  }
+  const keys = Object.keys(data);
+
+  keys.forEach((key) => {
+    const list = data[key];
+    list.forEach((item) => {
+      addItemToDo(item);
+      inProgressListItem(item);
+      completedListItem(item);
+    });
+  });
 }
 
 // Store data in local storage
-const dataObjectUpdate = () => {
+const updateLocalStorage = () => {
   localStorage.setItem('todoList', JSON.stringify(data));
 }
 
@@ -125,3 +113,6 @@ function completedListItem(completedText, toDo) {
     completedList.appendChild(completedItem, completedItem.childNodes[0]);
   }
 }
+
+// Render all list
+renderAllList();

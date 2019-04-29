@@ -5,11 +5,11 @@ export const list = () => {
         <h2>Select Option</h2>
         <ul>
           <li>
-            <input name="todo-radio-group" type="radio" id="toDoBtn" value="to-do">
+            <input name="todo-radio-group" type="radio" id="toDoBtn" value="toDo">
             <label for="toDoBtn">To Do</label>
           </li>
           <li>
-            <input name="todo-radio-group" type="radio" id="inProgressBtn" value="in-progress">
+            <input name="todo-radio-group" type="radio" id="inProgressBtn" value="inProgress">
             <label for="inProgressBtn">In Progress</label>
           </li>
           <li>

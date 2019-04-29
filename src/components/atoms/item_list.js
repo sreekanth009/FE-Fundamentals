@@ -13,12 +13,3 @@ export const itemList = () => {
   </div>
   `
 }
-
-{/* <ul class="in-progress" id="inProgress">
-  <h3>In Progress</h3>
-  <li>This is in progress item</li>
-</ul>
-<ul class="completed" id="completed">
-  <h3>Completed</h3>
-  <li>This is completed item</li>
-</ul> */}
