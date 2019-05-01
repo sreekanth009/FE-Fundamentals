@@ -10,12 +10,6 @@ const component = () => {
   return element;
 }
 
-// Add buttton disabled
-// const diabledAddButton = () => {
-//   const btnDisabled = document.querySelector('#addItem').disabled = true;
-//   return btnDisabled;
-// }
-
 // Local storage data object
 const data = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getItem('todoList')) : {
   toDo: [],
