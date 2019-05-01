@@ -3,68 +3,24 @@ import {list} from './components/molecules/radio_btns';
 import {todoInput} from './components/atoms/input';
 import {itemList} from './components/atoms/item_list';
 
-function component() {
-  const element = document.getElementById('todoApp');
+// DOM elements construction
+const component = () => {
+  const element = document.querySelector('#todoApp');
   element.innerHTML = `${list()} ${todoInput()} ${itemList()}`;
   return element;
 }
-// Main render
-document.body.appendChild(component());
 
-// Arrays
+// Add buttton disabled
+// const diabledAddButton = () => {
+//   const btnDisabled = document.querySelector('#addItem').disabled = true;
+//   return btnDisabled;
+// }
+
+// Local storage data object
 const data = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getItem('todoList')) : {
   toDo: [],
   inProgress: [],
   completed: [],
-}
-
-// Add items to list
-document.getElementById('addItem').addEventListener('click', function() {
-  const inputVal = document.getElementById('itemList').value;
-
-  if (inputVal) {
-    const key = document.querySelector('[name="todo-radio-group"]:checked').value;
-    data[key].push(inputVal);
-    /* Update data */
-    updateLocalStorage();
-  }
-
-  if ((document.getElementById('toDoBtn').checked === false)
-    && (document.getElementById('inProgressBtn').checked === false)
-    && (document.getElementById('completedBtn').checked === false)) {
-      alert ( "Please choose an option from above" );
-      document.getElementById('itemList').value = '';
-  } else {
-    if (inputVal) {
-      if (document.getElementById('toDoBtn').checked) {
-        addItemToDo(inputVal);
-      }
-      if (document.getElementById('inProgressBtn').checked) {
-        inProgressListItem(inputVal);
-      }
-      if (document.getElementById('completedBtn').checked) {
-        completedListItem(inputVal);
-      }
-      /* Clear input */
-      document.getElementById('itemList').value = '';
-    }
-  }
-});
-
-// Render All list function
-function renderAllList() {
-  if (!data.toDo.length && !data.inProgress.length && data.completed.length) return;
-
-  const keys = Object.keys(data);
-
-  keys.forEach((key) => {
-    const list = data[key];
-    list.forEach((item) => {
-      addItemToDo(item);
-      inProgressListItem(item);
-      completedListItem(item);
-    });
-  });
 }
 
 // Store data in local storage
@@ -72,47 +28,59 @@ const updateLocalStorage = () => {
   localStorage.setItem('todoList', JSON.stringify(data));
 }
 
-// Add item to to do list
-function addItemToDo(todoText, inProgress) {
-  const toDoList = (inProgress) ? document.getElementById('inProgress') : document.getElementById('toDo');
+// Render All list function
+function renderAllList() {
+  if (!data.toDo.length && !data.inProgress.length && data.completed.length) return;
+  const keys = Object.keys(data);
+  keys.forEach((key) => {
+    const list = data[key];
+    list.forEach((item) => {
+      addItemToList(item, key);
+    });
+  });
+}
 
+// Add items to list
+function addBtnClick () {
+  document.querySelector('#addItem').addEventListener('click', function() {
+    const inputVal = document.querySelector('#enterList').value;
+    let key = '';
+    
+    /* Update local storge data */
+    if (inputVal) {
+      key = document.querySelector('[name="todo-radio-group"]:checked').value;
+      data[key].push(inputVal);
+      updateLocalStorage();
+    }
+
+    if (!document.querySelector('[name="todo-radio-group"]:checked')) {
+      alert ( "Please choose an option from above" );
+      document.querySelector('#enterList').value = '';
+    } else {
+      if (inputVal) {
+        addItemToList(inputVal, key);
+        /* Clear input */
+        document.querySelector('#enterList').value = '';
+      }
+    }
+  });
+}
+
+// Common function for adding items to toDO, inProgress, Completed list
+const addItemToList = (inputVal, key) => {
+  const allItemList = document.querySelector(`#${key}`);
+  
   /* Create a todo list item */
-  const todoItem = document.createElement('li');
-  todoItem.innerText = todoText;
+  const item = document.createElement('li');
+  item.innerText = inputVal;
 
-  /* Selected option value */
-  if (document.getElementById('toDoBtn').checked || data.toDo.length) {
-    toDoList.appendChild(todoItem, toDoList.childNodes[0]);
-  }
+  allItemList.appendChild(item, allItemList.childNodes[0]);
+  return allItemList;
 }
 
-// Add item to in progress list
-function inProgressListItem(inProgressText, completed) {
-  const inProgressList = (completed) ? document.getElementById('completed') : document.getElementById('inProgress');
-
-  /* Create a in progress list item */
-  const inProgressItem = document.createElement('li');
-  inProgressItem.innerText = inProgressText;
-
-  /* Selected option value */
-  if (document.getElementById('inProgressBtn').checked || data.inProgress.length) {
-    inProgressList.appendChild(inProgressItem, inProgressItem.childNodes[0]);
-  }
-}
-
-// Add item to in progress list
-function completedListItem(completedText, toDo) {
-  const completedList = (toDo) ? document.getElementById('toDo') : document.getElementById('completed');
-
-  /* Create a in progress list item */
-  const completedItem = document.createElement('li');
-  completedItem.innerText = completedText;
-
-  /* Selected option value */
-  if (document.getElementById('completedBtn').checked || data.completed.length) {
-    completedList.appendChild(completedItem, completedItem.childNodes[0]);
-  }
-}
-
+// App initialization
+document.body.appendChild(component());
 // Render all list
 renderAllList();
+// Add button click
+addBtnClick();

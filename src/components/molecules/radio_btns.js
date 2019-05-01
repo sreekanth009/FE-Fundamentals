@@ -5,7 +5,7 @@ export const list = () => {
         <h2>Select Option</h2>
         <ul>
           <li>
-            <input name="todo-radio-group" type="radio" id="toDoBtn" value="toDo">
+            <input name="todo-radio-group" type="radio" id="toDoBtn" value="toDo" checked>
             <label for="toDoBtn">To Do</label>
           </li>
           <li>
