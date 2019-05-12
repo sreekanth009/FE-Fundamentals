@@ -10,19 +10,27 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
+        enforce: "pre",
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env']
+        loader: "eslint-loader"
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: '!eslint-loader!babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
         }
       },
       {
         test: /\.scss$/,
-        loader: 'style-loader!css-loader!sass-loader'
+        loader: 'style-loader!css-loader!postcss-loader!sass-loader'
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       }
     ],
   },
