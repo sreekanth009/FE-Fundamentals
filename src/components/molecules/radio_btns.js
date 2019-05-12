@@ -1,7 +1,7 @@
 export const list = () => {
   return `
     <form name="todolist">
-      <div class="radio-chocie" id="todoChoice">
+      <div class="radio-chocie">
         <h2>Select Option</h2>
         <ul>
           <li>

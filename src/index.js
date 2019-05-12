@@ -2,6 +2,7 @@ import "../src/styles/app.scss";
 import {list} from './components/molecules/radio_btns';
 import {todoInput} from './components/atoms/input';
 import {itemList} from './components/atoms/item_list';
+import {deleteItem} from './components/atoms/delete_item';
 
 // DOM elements construction
 const component = () => {
@@ -36,25 +37,28 @@ function renderAllList() {
 
 // Add items to list
 function addBtnClick () {
-  document.querySelector('#addItem').addEventListener('click', function() {
-    const inputVal = document.querySelector('#enterList').value;
-    let key = '';
-    
-    /* Update local storge data */
-    if (inputVal) {
-      key = document.querySelector('[name="todo-radio-group"]:checked').value;
-      data[key].push(inputVal);
-      updateLocalStorage();
-    }
-
-    if (!document.querySelector('[name="todo-radio-group"]:checked')) {
-      alert ( "Please choose an option from above" );
-      document.querySelector('#enterList').value = '';
-    } else {
+  document.body.addEventListener('click', function (event) {
+    if (event.target.id === 'addItem') {
+      const inputVal = document.querySelector('#enterList').value;
+      let key = '';
+      /* Update local storge data */
       if (inputVal) {
-        addItemToList(inputVal, key);
-        /* Clear input */
+        key = document.querySelector('[name="todo-radio-group"]:checked').value;
+        data[key].push(inputVal);
+        updateLocalStorage();
+      }
+
+      if (!document.querySelector('[name="todo-radio-group"]:checked')) {
+        alert ( "Please choose an option from above" );
         document.querySelector('#enterList').value = '';
+      } else if (inputVal === '') {
+        alert ( "Please enter a value" );
+      } else {
+        if (inputVal) {
+          addItemToList(inputVal, key);
+          /* Clear input */
+          document.querySelector('#enterList').value = '';
+        }
       }
     }
   });
@@ -66,15 +70,18 @@ const addItemToList = (inputVal, key) => {
   
   /* Create a todo list item */
   const item = document.createElement('li');
-  item.innerText = inputVal;
-
   allItemList.appendChild(item, allItemList.childNodes[0]);
+  item.innerHTML = `${inputVal} ${deleteItem(inputVal)}`;
   return allItemList;
 }
 
-// App initialization
-document.body.appendChild(component());
-// Render all list
-renderAllList();
-// Add button click
-addBtnClick();
+const init = () => {
+  // App initialization
+  document.body.appendChild(component());
+  // Render all list
+  renderAllList();
+  // Add button click
+  addBtnClick();
+}
+
+init();
