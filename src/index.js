@@ -71,8 +71,27 @@ const addItemToList = (inputVal, key) => {
   /* Create a todo list item */
   const item = document.createElement('li');
   allItemList.appendChild(item, allItemList.childNodes[0]);
+  item.setAttribute("data-value", inputVal);
   item.innerHTML = `${inputVal} ${deleteItem(inputVal)}`;
   return allItemList;
+}
+
+const removeListItem = () => {
+  const keys = Object.keys(data);
+  document.body.addEventListener('click', function (event) {
+    if(event.target.className === 'delete-item') {
+      const val = event.target.parentNode.getAttribute('data-value');
+      keys.forEach((key) => {
+        const list = data[key];
+        const valIndex = list.indexOf(val);
+        if (valIndex > -1) {
+          list.splice(valIndex, 1);
+          updateLocalStorage();
+        }
+      });
+      event.target.parentNode.remove();
+    }
+  });
 }
 
 const init = () => {
@@ -82,6 +101,7 @@ const init = () => {
   renderAllList();
   // Add button click
   addBtnClick();
+  // Remove list item
+  removeListItem();
 }
-
 init();
