@@ -114,7 +114,7 @@ const toDo = {
     keys.forEach((key) => {
       const list = data[key];
       list.forEach((item) => {
-        toDo.addItemToList(item, key);
+        this.addItemToList(item, key);
       });
     });
   },
@@ -148,7 +148,7 @@ const toDo = {
       alert ( "Please enter a value" );
     } else {
       if (inputVal) {
-        toDo.addItemToList(inputVal, key);
+        this.addItemToList(inputVal, key);
         /* Clear input */
         document.querySelector('#enterList').value = '';
       }
@@ -184,8 +184,8 @@ const toDo = {
   // App Bundling
   init: function() {
     document.body.appendChild(component());
-    toDo.renderAllList();
-    toDo.eventHandlers();
+    this.renderAllList();
+    this.eventHandlers();
   }
 }
 
