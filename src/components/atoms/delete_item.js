@@ -6,4 +6,10 @@ export const deleteItem = (inputVal) => {
     `
 }
 
+export const paragraphText = (inputVal) => {
+    return `
+        <p>${inputVal}</p>
+    `
+}
+
 {/* <i class="material-icons">close</i> */}

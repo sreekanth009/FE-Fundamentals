@@ -1,15 +1,29 @@
 export const itemList = () => {
   return `
-  <div class="item-list" id="itemList">
-    <ul class="todo-list" id="toDo">
-      <h3>To Do List</h3>
+  <div class="item-list-parent" id="itemList">
+    <ul class="list-headings">
+      <li>
+        <h3>To Do List</h3>
+      </li>
+      <li>
+        <h3>In Progress</h3>
+      </li>
+      <li>
+        <h3>Completed</h3>
+      </li>
     </ul>
-    <ul class="in-progress" id="inProgress">
-      <h3>In Progress</h3>
-    </ul>
-    <ul class="completed" id="completed">
-      <h3>Completed</h3>
-    </ul>
+    <div class="item-list" id="itemList">
+      <ul class="todo-list" id="toDo">
+      </ul>
+      <ul class="in-progress drop-target-ele" id="inProgress">
+      </ul>
+      <ul class="completed" id="completed">
+      </ul>
+      <div class="drop-target">
+        <p class="drag-target" draggable="true" id="dragtarget">Drag this content</p>
+      </div>
+      <div class="drop-target"></div>
+    </div>
   </div>
   `
 }
