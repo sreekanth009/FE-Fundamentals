@@ -1,8 +1,8 @@
 import "../src/styles/app.scss";
-import {list} from './components/molecules/radio_btns';
-import {todoInput} from './components/atoms/input';
-import {itemList} from './components/atoms/item_list';
-import {deleteItem, paragraphText} from './components/atoms/delete_item';
+import { list } from './components/molecules/radio_btns';
+import { todoInput } from './components/atoms/input';
+import { itemList } from './components/atoms/item_list';
+import { deleteItem, paragraphText } from './components/atoms/delete_item';
 
 // DOM elements construction
 const component = () => {
@@ -26,56 +26,44 @@ const updateLocalStorage = () => {
 // Data object keys
 const keys = Object.keys(data);
 
-const toDo = {
+// toDo app Namespacing and RMP
+const toDo = (() => {
   // Render all the list items from the local storage
-  renderAllList: function() {
+  const initialListRender = () => {
     if (!data.toDo.length && !data.inProgress.length && data.completed.length) return;
     keys.forEach((key) => {
       const list = data[key];
       list.forEach((item) => {
-        this.addItemToList(item, key);
+        addItemToList(item, key);
       });
     });
-  },
+  }
 
   // Set multiple attributes
-  setAttributes: function(element, attributes) {
-    Object.keys(attributes).forEach(function(name) {
+  const setAttributes = (element, attributes) => {
+    Object.keys(attributes).forEach(function (name) {
       element.setAttribute(name, attributes[name]);
     })
-  },
-
-  // Set draggable attribute
-  setDraggableAttr: function(item) {
-    toDo.setAttributes(item, {
-      'draggable': 'true',
-    });
-  },
+  }
 
   // Common function for adding items to toDO, inProgress, Completed list
-  addItemToList: function(inputVal, key) {
+  const addItemToList = (inputVal, key) => {
     const allItemList = document.querySelector(`#${key}`);
     /* Create a todo list item */
     const item = document.createElement('li');
     allItemList.appendChild(item, allItemList.childNodes[0]);
-    toDo.setAttributes(item, {
+    setAttributes(item, {
       'data-value': inputVal,
-      'id': inputVal
+      'id': inputVal,
+      'draggable': 'true'
     });
-
-    if (allItemList.id === 'toDo') {
-      toDo.setDraggableAttr(item);
-    }
-    if (allItemList.id === 'inProgress') {
-      toDo.setDraggableAttr(item);
-    }
 
     item.innerHTML = `${paragraphText(inputVal)} ${deleteItem(inputVal)}`;
     return allItemList;
-  },
+  }
 
   // Add items to list
-  addListItem: function() {
+  const addListItem = () => {
     const inputVal = document.querySelector('#enterList').value;
     let key = '';
     /* Update local storge data */
@@ -86,21 +74,21 @@ const toDo = {
     }
 
     if (!document.querySelector('[name="todo-radio-group"]:checked')) {
-      alert ( "Please choose an option from above" );
+      alert("Please choose an option from above");
       document.querySelector('#enterList').value = '';
     } else if (inputVal === '') {
-      alert ( "Please enter a value" );
+      alert("Please enter a value");
     } else {
       if (inputVal) {
-        this.addItemToList(inputVal, key);
+        addItemToList(inputVal, key);
         /* Clear input */
         document.querySelector('#enterList').value = '';
       }
     }
-  },
+  }
 
   // Remove items from list
-  removeListItem: function() {
+  const removeListItem = () => {
     const val = event.target.parentNode.getAttribute('data-value');
     keys.forEach((key) => {
       const list = data[key];
@@ -111,52 +99,68 @@ const toDo = {
       }
     });
     event.target.parentNode.remove();
-  },
+  }
 
   // Event handlers for Add and Remove items
-  eventHandlers: function() {
+  const eventHandlers = () => {
     document.body.addEventListener('click', function (event) {
       if (event.target.id === 'addItem') {
-        toDo.addListItem();
+        addListItem();
       }
-      if(event.target.className === 'delete-item') {
-        toDo.removeListItem();
+      if (event.target.className === 'delete-item') {
+        removeListItem();
       }
     });
-  },
+    document.body.addEventListener('keyup', function (event){
+      if (event.keyCode === 13) {
+        addListItem();
+      }
+    });
+  }
 
   // App Bundling
-  init: function() {
+  const init = () => {
     document.body.appendChild(component());
-    this.renderAllList();
-    this.eventHandlers();
+    initialListRender();
+    eventHandlers();
   }
-}
 
-// App initialization
-toDo.init();
-
-// Drag and Drop
-document.addEventListener('dragstart', function(event) {
-  event.dataTransfer.setData("text/plain", event.target.id);
-});
-
-document.addEventListener('dragenter', function(event) {
-  if (event.target.className === "drop-target-ele") {
-    event.target.style.border = "2px solid 0079c1";
+  // Drag and Drop
+  const dragEle = () => {
+    document.body.addEventListener('dragstart', function(event) {
+      event.dataTransfer.setData("text/plain", event.target.id);
+    });
   }
-});
 
-document.addEventListener("dragover", function(event) {
-  event.preventDefault();
-});
-
-document.addEventListener("drop", function(event) {
-  event.preventDefault();
-  if (event.target.className === "drop-target-ele") {
-    event.target.style.border = "";
-    const data = event.dataTransfer.getData("text/plain", event.target.id);
-    console.log('data', data);
-    event.target.appendChild(document.getElementById(data));
+  const dragOverEle = () => {
+    document.body.addEventListener("dragover", function(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = "move";
+    });
   }
-});
+
+  const dropTargetEle = () => {
+    document.body.addEventListener("drop", function(event) {
+      event.preventDefault();
+      if (event.target.className.includes('drop-element')) {
+        const data = event.dataTransfer.getData("text");
+        event.target.appendChild(document.getElementById(data));
+      }
+    });
+  }
+
+  // Drag and drop bundling
+  const dragDropInteraction = () => {
+    dragEle();
+    dragOverEle();
+    dropTargetEle();
+  }
+
+  return {
+    appInit: init,
+    dragDrop: dragDropInteraction
+  }
+})();
+
+toDo.appInit();
+toDo.dragDrop();

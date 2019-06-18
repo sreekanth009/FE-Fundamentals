@@ -13,16 +13,12 @@ export const itemList = () => {
       </li>
     </ul>
     <div class="item-list" id="itemList">
-      <ul class="todo-list" id="toDo">
+      <ul class="todo-list drop-element" id="toDo">
       </ul>
-      <ul class="in-progress drop-target-ele" id="inProgress">
+      <ul class="in-progress drop-element" id="inProgress">
       </ul>
-      <ul class="completed" id="completed">
+      <ul class="completed drop-element" id="completed">
       </ul>
-      <div class="drop-target">
-        <p class="drag-target" draggable="true" id="dragtarget">Drag this content</p>
-      </div>
-      <div class="drop-target"></div>
     </div>
   </div>
   `

@@ -178,15 +178,16 @@ section {
     .item-list {
       margin-top: 10px;
       ul {
-        width: 30%;
+        width: 25%;
         display: inline-block;
         position: relative;
         vertical-align: top;
         padding: 10px 0;
-        min-height: 150px;
+        min-height: 300px;
+        margin-right: 5%;
   
         li {
-          width: 80%;
+          width: 100%;
           padding: 10px;
           display: flex;
           margin-bottom: 10px;
@@ -194,7 +195,7 @@ section {
           box-shadow: 0 2px 4px 0 rgba(0,0,0,.1);
   
           &:last-child {
-            margin: 0;
+            margin-bottom: 50px;
           }
 
           p {
