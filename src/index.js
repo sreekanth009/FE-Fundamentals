@@ -4,15 +4,17 @@ import { todoInput } from './components/atoms/input';
 import { itemList } from './components/atoms/item_list';
 import { deleteItem, paragraphText } from './components/atoms/delete_item';
 
+const APP_NAME = 'todoList';
+
 // DOM elements construction
-const component = () => {
+const mainLayoutCreator = () => {
   const element = document.querySelector('#todoApp');
   element.innerHTML = `${list()} ${todoInput()} ${itemList()}`;
   return element;
 }
 
 // Local storage data object
-const data = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getItem('todoList')) : {
+const data = (localStorage.getItem(APP_NAME)) ? JSON.parse(localStorage.getItem(APP_NAME)) : {
   toDo: [],
   inProgress: [],
   completed: [],
@@ -20,7 +22,7 @@ const data = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getIte
 
 // Store data in local storage
 const updateLocalStorage = () => {
-  localStorage.setItem('todoList', JSON.stringify(data));
+  localStorage.setItem(APP_NAME, JSON.stringify(data));
 }
 
 // Data object keys
@@ -41,7 +43,7 @@ const toDo = (() => {
 
   // Set multiple attributes
   const setAttributes = (element, attributes) => {
-    Object.keys(attributes).forEach(function (name) {
+    Object.keys(attributes).forEach((name) => {
       element.setAttribute(name, attributes[name]);
     })
   }
@@ -120,7 +122,7 @@ const toDo = (() => {
 
   // App Bundling
   const init = () => {
-    document.body.appendChild(component());
+    document.body.appendChild(mainLayoutCreator());
     initialListRender();
     eventHandlers();
   }
@@ -128,7 +130,7 @@ const toDo = (() => {
   // Drag and Drop
   const dragEle = () => {
     document.body.addEventListener('dragstart', function(event) {
-      event.dataTransfer.setData("text/plain", event.target.id);
+      event.dataTransfer.setData("text", event.target.id);
     });
   }
 
@@ -164,3 +166,6 @@ const toDo = (() => {
 
 toDo.appInit();
 toDo.dragDrop();
+
+
+Object.keys(ls).forEach((key) => {ls[keys].forEach((val) => setData(val, key)) });
