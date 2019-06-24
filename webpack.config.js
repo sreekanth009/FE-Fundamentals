@@ -11,6 +11,11 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
+        use: ['babel-loader', 'eslint-loader']
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
           presets: ['@babel/preset-env']
